@@ -1,6 +1,6 @@
 [project]
 name = "telegrambotcli"
-version = "0.4.1"
+version = "0.4.2"
 description = "A utility for quickly generating projects on aiogram 3"
 readme = "README.md"
 requires-python = ">=3.8"

@@ -17,7 +17,12 @@ Install the tool directly from PyPI:
 pip install telegrambotcli
 ```
 
+## 🌞How to start
+
+Write in terminal ``telegrambotcli``
+
 ```
+
 ## 📂 Generated Project Structure
 
 When you run the tool, it creates a clean, modular architecture:
