@@ -43,3 +43,4 @@ your_project/
 ## **🧑‍💻**GitHub repository
 
 [Sourse code](https://github.com/AnonimPython/telegrambotcli)
+[PyPi page](https://pypi.org/project/telegrambotcli/)
