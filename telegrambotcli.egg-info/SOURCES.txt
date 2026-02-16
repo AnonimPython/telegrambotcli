@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+aiogram_gen/main.py
+aiogram_gen/templates.py
+telegrambotcli.egg-info/PKG-INFO
+telegrambotcli.egg-info/SOURCES.txt
+telegrambotcli.egg-info/dependency_links.txt
+telegrambotcli.egg-info/entry_points.txt
+telegrambotcli.egg-info/requires.txt
+telegrambotcli.egg-info/top_level.txt

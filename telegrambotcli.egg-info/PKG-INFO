@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: telegrambotcli
+Version: 0.4.0
+Summary: A utility for quickly generating projects on aiogram 3
+Author-email: AnonimPython <moscow.retro@list.ru>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: typer[all]
+Requires-Dist: sqlmodel
+Requires-Dist: aiogram>=3.0.0
+Requires-Dist: pydantic-settings
+Requires-Dist: psycopg2
+Requires-Dist: python-dotenv
+
+# 🚀 TelegramBotCLI
+
+A lightweight command-line utility for quickly generating professional project structures for **Aiogram 3** bots. Stop wasting time on boilerplate and start coding your logic instantly.
+
+## ✨ Features
+
+- **Instant Structure:** Creates folders for handlers, database (SQLModel), and keyboards in one command.
+- **Smart OS Detection:** Automatically suggests the correct run command (`python` vs `python3`) based on your system.
+- **Ready-to-Go Templates:** Includes pre-configured `.env`, `.gitignore`, and basic bot logic with commands.
+- **Built-in Keyboards:** Comes with examples for both standard and inline keyboards.
+
+## 📦 Installation
+
+Install the tool directly from PyPI:
+
+```bash
+pip install telegrambotcli
+```

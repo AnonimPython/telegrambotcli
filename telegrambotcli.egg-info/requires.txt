@@ -1,0 +1,6 @@
+typer[all]
+sqlmodel
+aiogram>=3.0.0
+pydantic-settings
+psycopg2
+python-dotenv

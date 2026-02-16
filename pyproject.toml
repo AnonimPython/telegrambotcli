@@ -1,0 +1,24 @@
+[project]
+name = "telegrambotcli"
+version = "0.4.1"
+description = "A utility for quickly generating projects on aiogram 3"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "AnonimPython", email = "moscow.retro@list.ru"}
+]
+dependencies = [
+    "typer[all]",
+    "sqlmodel",
+    "aiogram>=3.0.0",
+    "pydantic-settings",
+    "psycopg2",
+    "python-dotenv",
+]
+
+[project.scripts]
+telegrambotcli = "aiogram_gen.main:app"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

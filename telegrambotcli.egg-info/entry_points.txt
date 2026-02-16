@@ -1,0 +1,2 @@
+[console_scripts]
+telegrambotcli = aiogram_gen.main:app
