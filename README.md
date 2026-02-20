@@ -1,13 +1,14 @@
-# 🚀 TelegramBotCLI
+## 🚀 TelegramBotCLI
 
 A lightweight command-line utility for quickly generating professional project structures for **Aiogram 3** bots. Stop wasting time on boilerplate and start coding your logic instantly.
 
 ## ✨ Features
 
-- **Instant Structure:** Creates folders for handlers, database (SQLModel), and keyboards in one command.
-- **Smart OS Detection:** Automatically suggests the correct run command (`python` vs `python3`) based on your system.
-- **Ready-to-Go Templates:** Includes pre-configured `.env`, `.gitignore`, and basic bot logic with commands.
-- **Built-in Keyboards:** Comes with examples for both standard and inline keyboards.
+- **Standard & Advanced Templates:** Choose between a lightweight setup or a production-ready structure.
+- **Pro Components:** Includes **Anti-flood Middleware** and **Admin Filters** out of the box.
+- **Database Ready:** Pre-configured **SQLModel** (SQLite/PostgreSQL) integration.
+- **Smart OS Detection:** Suggests the correct run command (`python` vs `python3`) for your system.
+- **Automated Init:** Handles all `__init__.py` files automatically for clean imports.
 
 ## 📦 Installation
 
@@ -17,35 +18,67 @@ Install the tool directly from PyPI:
 pip install telegrambotcli
 ```
 
-## 🌞How to start
 
-Write in terminal ``telegrambotcli``
+## 🌞 How to Start
+
+Open your terminal in the desired project folder and run:
+
+bash
 
 ```
+telegrambotcli
+```
 
-## 📂 Generated Project Structure
+You will be prompted to choose a template:
 
-When you run the tool, it creates a clean, modular architecture:
+1. **[Standard]** **: Basic bot with DB, Keyboards, and essential handlers.**
+2. **[Advanced]** **: Includes Admin logic, Anti-flood protection, and advanced filtering.**
 
-```text
+📂 Generated Project Structure
+
+text
+
+```
 your_project/
 ├── app/
-│   ├── handlers/
-│   │   ├── database/
-│   │   │   ├── database.py   # SQLModel engine & session setup
-│   │   │   └── __init__.py
-│   │   ├── keyboards/
-│   │   │   ├── builders.py   # Reply & Inline keyboard templates
-│   │   │   └── __init__.py
-│   │   ├── main.py           # Command handlers (/start, /keyboard, etc.)
-│   │   └── __init__.py
-│   └── __init__.py
-├── bot.py                    # Main entry point (Dispatcher & Polling)
-├── .env                      # Environment variables (Tokens, DB URLs)
-└── .gitignore                # Pre-configured for Python & VSCode
+│   ├── database/
+│   │   └── database.py    # SQLModel engine & User model
+│   ├── filters/           # (Advanced) AdminFilter logic
+│   ├── keyboards/
+│   │   └── builders.py    # Reply & Inline keyboard templates
+│   ├── middlewares/       # (Advanced) Anti-flood middleware
+│   └── main.py            # Main Router (Help, Settings, Admin handlers)
+├── bot.py                 # Main entry point (Dispatcher & Polling)
+├── .env                   # Environment variables (Token, Admin ID)
+└── .gitignore             # Pre-configured for Python & VSCode
 ```
 
-## **🧑‍💻**GitHub repository
+
+## 🚀 Quick Start Guide
+
+1. **Configure:** **Open the generated** `.env` **file and fill in your credentials:**
+   env
+
+   ```
+   BOT_TOKEN="123456:ABC-DEF..."
+   ADMIN_ID="987654321"
+   ```
+2. **Run:** **Launch your bot using the suggested command:**
+   bash
+
+   ```
+   python bot.py  # or python3 bot.py
+   ```
+
+### 🛠 Handlers Included
+
+The generated `app/main.py` automatically includes:
+
+* `/start`, `/keyboard`, `/inline`
+* **Text filters** **for "Help 🆘" and "Settings ⚙️" buttons.**
+* **Admin check** **for the** `/admin` **command (in Advanced mode).**
+
+## 🧑‍💻GitHub repository
 
 [Sourse code](https://github.com/AnonimPython/telegrambotcli)
 [PyPi page](https://pypi.org/project/telegrambotcli/)

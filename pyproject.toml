@@ -1,12 +1,13 @@
 [project]
 name = "telegrambotcli"
-version = "0.4.2"
+version = "0.5.2"
 description = "A utility for quickly generating projects on aiogram 3"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
     {name = "AnonimPython", email = "moscow.retro@list.ru"}
 ]
+keywords = ["aiogram", "cli", "generator", "telegram", "bot"]
 dependencies = [
     "typer[all]",
     "sqlmodel",
@@ -14,6 +15,7 @@ dependencies = [
     "pydantic-settings",
     "psycopg2",
     "python-dotenv",
+    "pydantic",
 ]
 
 [project.scripts]

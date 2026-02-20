@@ -1,124 +1,164 @@
-# --- Base Bot Template ---
+
 START_PY_CONTENT = """import asyncio
 import logging
 import os
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
-from app.handlers.main import router
+from app.main import router
 
-# Load environment variables from .env file
 load_dotenv()
 
 async def main():
-    # Logging setup
     logging.basicConfig(level=logging.INFO)
     
-    # Get token from .env
     token = os.getenv("BOT_TOKEN")
     if not token:
-        exit("Error: BOT_TOKEN not found in .env file")
+        exit("Error: BOT_TOKEN not found in .env")
 
     bot = Bot(token=token)
     dp = Dispatcher()
     dp.include_router(router)
     
-    print("🚀 System Online: Telegram Bot is now polling...")
+
+    print("🚀 Bot is running...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("🛑 System Offline")
+        print("🛑 Stopped")
 """
-
-# --- Handlers Template ---
-HANDLERS_MAIN_CONTENT = """from aiogram import Router, types
+HANDLERS_LITE_CONTENT = """from aiogram import Router, types, F
 from aiogram.filters import Command
-from app.handlers.keyboards.builders import get_main_kb, get_inline_kb
+from app.keyboards.builders import get_main_kb, get_inline_kb
 
 router = Router()
 
 @router.message(Command("start"))
 async def cmd_start(message: types.Message):
-    await message.answer("Hello! I am your AI-powered bot. Use /keyboard or /inlinekeyboard to see what I can do.")
+    await message.answer("Hello! I am your bot. Use /keyboard or /inline to see buttons.")
 
 @router.message(Command("keyboard"))
 async def cmd_keyboard(message: types.Message):
-    await message.answer("This is a standard reply keyboard:", reply_markup=get_main_kb())
+    await message.answer("This is a standard keyboard:", reply_markup=get_main_kb())
 
-@router.message(Command("inlinekeyboard"))
+@router.message(Command("inline"))
 async def cmd_inline(message: types.Message):
-    await message.answer("This is an inline keyboard (under the text):", reply_markup=get_inline_kb())
+    await message.answer("This is an inline keyboard:", reply_markup=get_inline_kb())
+    
+@router.message(F.text == "Help 🆘")
+async def help_handler(message: types.Message):
+    await message.answer("You use Help button")
+
+@router.message(F.text == "Settings ⚙️")
+async def settings_handler(message: types.Message):
+    await message.answer("You use Settings button")    
+
+"""
+# --- Handlers (Advanced version with Admin check) ---
+HANDLERS_ADVANCED_CONTENT = """from aiogram import Router, types, F
+from aiogram.filters import Command
+from app.keyboards.builders import get_main_kb, get_inline_kb
+from app.filters.admin import AdminFilter
+
+router = Router()
+
+@router.message(Command("start"))
+async def cmd_start(message: types.Message):
+    await message.answer("Hello! Advanced bot is ready. Commands: /keyboard, /inline, /admin")
+
+@router.message(Command("keyboard"))
+async def cmd_keyboard(message: types.Message):
+    await message.answer("Standard keyboard:", reply_markup=get_main_kb())
+
+@router.message(Command("inline"))
+async def cmd_inline(message: types.Message):
+    await message.answer("Inline keyboard:", reply_markup=get_inline_kb())
+    
+@router.message(F.text == "Help 🆘")
+async def help_handler(message: types.Message):
+    await message.answer("You use Help button")
+
+@router.message(F.text == "Settings ⚙️")
+async def settings_handler(message: types.Message):
+    await message.answer("You use Settings button")
+
+@router.message(Command("admin"), AdminFilter())
+async def cmd_admin_success(message: types.Message):
+    await message.answer(f"👑 Access granted, Admin {message.from_user.id}!")
+
+@router.message(Command("admin"))
+async def cmd_admin_fail(message: types.Message):
+    await message.answer("🚫 Access denied: You are not an admin.")
 """
 
-# --- Keyboards Template ---
+
+# --- Keyboards ---
 KEYBOARDS_CONTENT = """from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from aiogram.types import KeyboardButton, InlineKeyboardButton
 
 def get_main_kb():
-    \"\"\"Standard Reply Keyboard (buttons at the bottom)\"\"\"
     builder = ReplyKeyboardBuilder()
-    builder.row(KeyboardButton(text="Support 🆘"), KeyboardButton(text="Settings ⚙️"))
+    builder.row(KeyboardButton(text="Help 🆘"), KeyboardButton(text="Settings ⚙️"))
     return builder.as_markup(resize_keyboard=True)
 
 def get_inline_kb():
-    \"\"\"Inline Keyboard (buttons under the message)\"\"\"
     builder = InlineKeyboardBuilder()
-    builder.row(InlineKeyboardButton(text="Our GitHub", url="https://github.com"))
-    builder.add(InlineKeyboardButton(text="Join Channel", url="https://t.me"))
+    builder.row(InlineKeyboardButton(text="GitHub", url="https://github.com/AnonimPython/"))
+    builder.add(InlineKeyboardButton(text="PyPl",url="https://pypi.org/project/telegrambotcli/", callback_data="support"))
     return builder.as_markup()
 """
 
-# --- Handlers Template ---
-HANDLERS_MAIN_CONTENT = """from aiogram import Router, types
-from aiogram.filters import Command
-from app.handlers.keyboards.builders import get_main_kb, get_inline_kb
-
-router = Router()
-
-@router.message(Command("start"))
-async def cmd_start(message: types.Message):
-    await message.answer("Hello! I am your AI-powered bot. Use /keyboard or /inlinekeyboard to see what I can do.")
-
-@router.message(Command("keyboard"))
-async def cmd_keyboard(message: types.Message):
-    await message.answer("This is a standard reply keyboard:", reply_markup=get_main_kb())
-
-@router.message(Command("inlinekeyboard"))
-async def cmd_inline(message: types.Message):
-    await message.answer("This is an inline keyboard (under the text):", reply_markup=get_inline_kb())
-"""
-
-
-
-# --- Database Template (SQLModel) ---
+# --- Database ---
 DATABASE_CONTENT = """from sqlmodel import Field, SQLModel, create_engine, Session
+import os
 
-# Example Model
 class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     telegram_id: int = Field(index=True, unique=True)
-    username: str | None = None
 
-# --- DATABASE CONNECTION ---
-# SQLite (Local Development)
-sqlite_url = "sqlite:///./database.db"
+# --- DB CONNECTION CONFIG ---
+# Local SQLite
+db_url = "sqlite:///./database.db"
 
-# PostgreSQL (Production Example)
-# To use Postgres, install 'psycopg2' and change URL:
-# postgres_url = "postgresql://user:password@localhost:5432/dbname"
+# PostgreSQL Example
+# To use: uncomment the line in .env and add your PostgreSQL credentials
+# db_url = os.getenv("DATABASE_URL")
 
-engine = create_engine(sqlite_url, echo=False)
+engine = create_engine(db_url)
 
 def init_db():
-    \"\"\"Creates all tables defined in models\"\"\"
     SQLModel.metadata.create_all(engine)
+"""
+# --- Advanced Components ---
+ADMIN_FILTER_CONTENT = """from aiogram.filters import Filter
+from aiogram.types import Message
+import os
 
-def get_session():
-    \"\"\"Dependency for getting DB sessions\"\"\"
-    with Session(engine) as session:
-        yield session
+class AdminFilter(Filter):
+    async def __call__(self, message: Message) -> bool:
+        admin_id = os.getenv("ADMIN_ID")
+        return str(message.from_user.id) == str(admin_id)
+"""
+
+ANTIFLOOD_MW_CONTENT = """import asyncio
+from aiogram import BaseMiddleware
+
+class AntiFloodMiddleware(BaseMiddleware):
+    def __init__(self, limit: int = 2):
+        self.limit = {}
+        self.limit_time = limit
+        super().__init__()
+
+    async def __call__(self, handler, event, data):
+        user_id = event.from_user.id
+        if user_id in self.limit:
+            return
+        self.limit[user_id] = True
+        await asyncio.sleep(self.limit_time)
+        del self.limit[user_id]
+        return await handler(event, data)
 """
 
 # --- GITIGNORE Template ---
@@ -150,7 +190,8 @@ target/
 """
 
 # --- .env Template  ---
-ENV_CONTENT = """TELEGRAM_TOKEN="YOUR_BOT_TOKEN_HERE"
-# DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
-#ADMIN_ID="YOUR_TELEGRAM_ID"
+ENV_CONTENT = """BOT_TOKEN="YOUR_BOT_TOKEN_HERE"
+ADMIN_ID="123456789"
+
+# DB_URL="postgresql://USER:PASSOWRD@localhost:5432/DATABASE_NAME"
 """
